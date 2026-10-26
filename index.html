@@ -8,9 +8,23 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
 
-    .screen { display: none; position: relative; width: 100%; max-width: 1270px; }
-    .screen.active { display: block; }
-    .screen img.bg { width: 100%; display: block; height: auto; }
+    #game {
+      position: relative;
+      width: 100%;
+      max-width: 1270px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+    .screen {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .screen.visible { opacity: 1; pointer-events: auto; }
+    .screen img.bg { width: 100%; height: 100%; display: block; object-fit: cover; }
 
     /* Botón inicio – esquina inferior izquierda de la imagen */
     #btn-start {
@@ -64,8 +78,8 @@
       width: 14px; height: 14px;
       background: #ff5050; cursor: se-resize; border-radius: 2px 0 6px 0;
     }
-    body.debug #btn-back, body.debug #btn-back2, body.debug #btn-back3, body.debug #btn-back4, body.debug #btn-back5, body.debug #btn-back6, body.debug #btn-back7, body.debug #btn-back8, body.debug #btn-back9, body.debug #btn-back10, body.debug #btn-back11, body.debug #btn-back12, body.debug #btn-back13, body.debug #btn-back14,
-    body.debug #btn-los1, body.debug #btn-chef13, body.debug #btn-chef14 {
+    body.debug #btn-back, body.debug #btn-back2, body.debug #btn-back3, body.debug #btn-back4, body.debug #btn-back5, body.debug #btn-back6, body.debug #btn-back7, body.debug #btn-back8, body.debug #btn-back9, body.debug #btn-back10, body.debug #btn-back11, body.debug #btn-back12, body.debug #btn-back13, body.debug #btn-back14, body.debug #btn-back15, body.debug #btn-back16, body.debug #btn-back17, body.debug #btn-back18, body.debug #btn-back19, body.debug #btn-back20, body.debug #btn-back21, body.debug #btn-back22, body.debug #btn-back23,
+    body.debug #btn-los1, body.debug #btn-chef13, body.debug #btn-chef14, body.debug #btn-chef15, body.debug #btn-chef16, body.debug #btn-chef17, body.debug #btn-chef18, body.debug #btn-chef19, body.debug #btn-chef20, body.debug #btn-chef21, body.debug #btn-chef22, body.debug #btn-chef23, body.debug #btn-chef24, body.debug #btn-chef25, body.debug #btn-chef26, body.debug #btn-back26, body.debug #btn-chef27, body.debug #btn-back27, body.debug #btn-chef28, body.debug #btn-back28 {
       background: rgba(0,150,255,0.3) !important;
       border: 3px solid rgba(0,150,255,0.9) !important;
     }
@@ -80,11 +94,12 @@
       cursor: pointer; padding: 6px 12px; color: #0f0;
       font: bold 14px monospace; user-select: none;
     }
-    #debug-body { display: none; padding: 8px 12px; white-space: pre; border-top: 1px solid #0f0; }
+    #debug-body { display: none; padding: 8px 12px; border-top: 1px solid #0f0; max-width: 580px; }
     #debug-body.open { display: block; }
+    #debug-body .dbrow { margin-bottom: 3px; line-height: 1.8; }
 
     /* Botones Zurück invisibles sobre la imagen */
-    #btn-back, #btn-back2, #btn-back3, #btn-back4, #btn-back5, #btn-back6, #btn-back7, #btn-back8, #btn-back9, #btn-back10, #btn-back11, #btn-back12, #btn-back13, #btn-back14 {
+    #btn-back, #btn-back2, #btn-back3, #btn-back4, #btn-back5, #btn-back6, #btn-back7, #btn-back8, #btn-back9, #btn-back10, #btn-back11, #btn-back12, #btn-back13, #btn-back14, #btn-back15, #btn-back16, #btn-back17, #btn-back18, #btn-back19, #btn-back20, #btn-back21, #btn-back22, #btn-back23, #btn-back24, #btn-back25, #btn-back26, #btn-back27, #btn-back28 {
       position: absolute;
       background: transparent;
       border: none;
@@ -105,9 +120,23 @@
     #btn-back12 { left:83.4%; top:59.8%; width:13%; height:13%; }
     #btn-back13 { left:67.3%; top:84.6%; width:12.6%; height:13%; }
     #btn-back14 { left:86%; top:82.1%; width:13%; height:13%; }
+    #btn-back15 { left:83.6%; top:82.4%; width:13%; height:13%; }
+    #btn-back16 { left:84%; top:83%; width:13%; height:13%; }
+    #btn-back17 { left:84%; top:82.4%; width:12.5%; height:13.1%; }
+    #btn-back18 { left:83.5%; top:7.1%; width:13%; height:13%; }
+    #btn-back19 { left:83.7%; top:7%; width:13%; height:13%; }
+    #btn-back20 { left:86%; top:84.8%; width:13%; height:13%; }
+    #btn-back21 { left:86.4%; top:84.7%; width:13%; height:13%; }
+    #btn-back22 { left:86.4%; top:84.8%; width:12.4%; height:12.9%; }
+    #btn-back23 { left:86.2%; top:84.4%; width:13%; height:13%; }
+    #btn-back24 { left:87.3%; top:85.9%; width:13%; height:13%; }
+    #btn-back25 { left:87.1%; top:85.4%; width:13%; height:13%; }
+    #btn-back26 { left:86.5%; top:84.1%; width:13%; height:13%; }
+    #btn-back27 { left:86%; top:84.7%; width:13%; height:13%; }
+    #btn-back28 { left:86%; top:84.7%; width:13%; height:13%; }
 
-    /* Capas animadas Q13 / Q14 */
-    .q13-layer, .q14-layer {
+    /* Capas animadas Q13–Q22 */
+    .q13-layer, .q14-layer, .q15-layer, .q16-layer, .q17-layer, .q18-layer, .q19-layer, .q20-layer, .q21-layer, .q22-layer, .q23-layer, .q24-layer, .q25-layer, .q26-layer, .q27-layer, .q28-layer {
       position: absolute;
       top: 0; left: 0;
       width: 100%;
@@ -145,12 +174,95 @@
       touch-action: manipulation;
     }
     #btn-next:hover, #btn-next:active { background: #a00e26; }
+
+    /* ── Main page ── */
+    #screen-mainpage {
+      background: linear-gradient(160deg, #2b1a0e 0%, #5c2f0a 50%, #2b1a0e 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4%;
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+    #screen-mainpage h1 {
+      color: #f5deb3;
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      letter-spacing: 0.12em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      margin: 0;
+    }
+    #screen-mainpage .subtitle {
+      color: #c9a96e;
+      font-size: clamp(0.75rem, 1.8vw, 1.1rem);
+      letter-spacing: 0.06em;
+      margin: 0;
+    }
+    .main-btns {
+      display: flex;
+      gap: 4%;
+      width: 80%;
+      justify-content: center;
+    }
+    .main-btn {
+      flex: 1;
+      max-width: 38%;
+      background: rgba(255,255,255,0.07);
+      border: 2px solid #c9a96e;
+      border-radius: 14px;
+      color: #f5deb3;
+      cursor: pointer;
+      padding: 5% 3%;
+      text-align: center;
+      transition: background 0.2s, transform 0.15s;
+      touch-action: manipulation;
+    }
+    .main-btn:hover, .main-btn:active {
+      background: rgba(201,169,110,0.18);
+      transform: scale(1.03);
+    }
+    .main-btn .btn-num {
+      font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6%;
+    }
+    .main-btn .btn-label {
+      font-size: clamp(0.7rem, 1.6vw, 1rem);
+      display: block;
+      color: #c9a96e;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
+<div id="game">
+<div id="click-lock" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:9999;display:none;pointer-events:all;"></div>
+
+<!-- PANTALLA INICIO -->
+<div id="screen-mainpage" class="screen visible">
+  <img id="main-bg" src="" alt="" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.5s ease;pointer-events:none;">
+  <div id="main-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);transition:opacity 0.5s ease;pointer-events:none;"></div>
+  <h1 style="position:relative">🍳 Die Küche</h1>
+  <p class="subtitle" style="position:relative">Deutsches Vokabular · Vocabulario de cocina</p>
+  <div class="main-btns" style="position:relative">
+    <button class="main-btn" onclick="startSection(1)"
+      onmouseenter="mainHover('images/main_compras.webp')"
+      onmouseleave="mainHoverOut()">
+      <span class="btn-num">Abschnitt 1</span>
+      <span class="btn-label">Las compras &amp; los ingredientes</span>
+    </button>
+    <button class="main-btn" onclick="startSection(2)"
+      onmouseenter="mainHover('images/main_preparacion.webp')"
+      onmouseleave="mainHoverOut()">
+      <span class="btn-num">Abschnitt 2</span>
+      <span class="btn-label">La preparación</span>
+    </button>
+  </div>
+</div>
 
 <!-- PANTALLA 1: Receta -->
-<div id="screen-recipe" class="screen active">
+<div id="screen-recipe" class="screen">
   <img class="bg" src="images/1.webp" alt="Receta">
   <button id="btn-start" onclick="showQuestion()">Los geht's! ▶</button>
 </div>
@@ -160,14 +272,14 @@
   <img class="bg" src="images/2.webp" alt="Was sind kleine Baguettes?">
   <div class="hotspots">
     <!-- Fila superior -->
-    <div class="hotspot" data-n="1"  style="left:3.1%; top:26.3%; width:21.2%; height:26.2%;" onclick="answer(false)"></div>
-    <div class="hotspot" data-n="2"  style="left:27%;  top:21.8%; width:18.1%; height:27%;"   onclick="answer(false)"></div>
-    <div class="hotspot" data-n="3"  style="left:76.9%;top:27.1%; width:21.2%; height:26%;"   onclick="answer(false)"></div>
-    <div class="hotspot" data-n="4✓" style="left:49.3%;top:20.4%; width:26.1%; height:27.3%;" onclick="answer(true)"></div>
+    <div class="hotspot" data-n="1"  style="left:3.1%; top:26.3%; width:21.2%; height:26.2%;" onclick="answer(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:27%;  top:21.8%; width:18.1%; height:27%;"   onclick="answer(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:76.9%;top:27.1%; width:21.2%; height:26%;"   onclick="answer(3)"></div>
+    <div class="hotspot" data-n="4" style="left:49.3%;top:20.4%; width:26.1%; height:27.3%;" onclick="answer(4)"></div>
     <!-- Fila inferior -->
-    <div class="hotspot" data-n="5"  style="left:14%;  top:61.1%; width:19.3%; height:25.3%;" onclick="answer(false)"></div>
-    <div class="hotspot" data-n="6"  style="left:41.3%;top:62.3%; width:21.6%; height:25.2%;" onclick="answer(false)"></div>
-    <div class="hotspot" data-n="7"  style="left:68.8%;top:60.2%; width:18%;   height:27%;"   onclick="answer(false)"></div>
+    <div class="hotspot" data-n="5"  style="left:14%;  top:61.1%; width:19.3%; height:25.3%;" onclick="answer(5)"></div>
+    <div class="hotspot" data-n="6"  style="left:41.3%;top:62.3%; width:21.6%; height:25.2%;" onclick="answer(6)"></div>
+    <div class="hotspot" data-n="7"  style="left:68.8%;top:60.2%; width:18%;   height:27%;"   onclick="answer(7)"></div>
   </div>
 </div>
 
@@ -175,13 +287,13 @@
 <div id="screen-question2" class="screen">
   <img class="bg" src="images/q2.webp" alt="Nimm den Esslöffel">
   <div class="hotspots">
-    <div class="hotspot" data-n="1✓" style="left:9.6%;  top:24.8%; width:15.1%; height:26.4%;" onclick="answer2(true)"></div>
-    <div class="hotspot" data-n="2"  style="left:33%;   top:25.2%; width:12.8%; height:25.8%;" onclick="answer2(false)"></div>
-    <div class="hotspot" data-n="3"  style="left:54%;   top:25%;   width:16.3%; height:26%;"   onclick="answer2(false)"></div>
-    <div class="hotspot" data-n="4"  style="left:78.4%; top:25.2%; width:14.6%; height:26.2%;" onclick="answer2(false)"></div>
-    <div class="hotspot" data-n="5"  style="left:18.7%; top:62.2%; width:16.4%; height:19.8%;" onclick="answer2(false)"></div>
-    <div class="hotspot" data-n="6"  style="left:42%;   top:62.2%; width:15.6%; height:21.2%;" onclick="answer2(false)"></div>
-    <div class="hotspot" data-n="7"  style="left:66.3%; top:62%;   width:13.9%; height:20.4%;" onclick="answer2(false)"></div>
+    <div class="hotspot" data-n="1" style="left:9.6%;  top:24.8%; width:15.1%; height:26.4%;" onclick="answer2(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:33%;   top:25.2%; width:12.8%; height:25.8%;" onclick="answer2(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:54%;   top:25%;   width:16.3%; height:26%;"   onclick="answer2(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:78.4%; top:25.2%; width:14.6%; height:26.2%;" onclick="answer2(4)"></div>
+    <div class="hotspot" data-n="5"  style="left:18.7%; top:62.2%; width:16.4%; height:19.8%;" onclick="answer2(5)"></div>
+    <div class="hotspot" data-n="6"  style="left:42%;   top:62.2%; width:15.6%; height:21.2%;" onclick="answer2(6)"></div>
+    <div class="hotspot" data-n="7"  style="left:66.3%; top:62%;   width:13.9%; height:20.4%;" onclick="answer2(7)"></div>
   </div>
 </div>
 
@@ -189,10 +301,10 @@
 <div id="screen-question3" class="screen">
   <img class="bg" src="images/q3.webp" alt="Wo ist das Muskat?">
   <div class="hotspots">
-    <div class="hotspot" data-n="1"  style="left:4%;   top:33.6%; width:20%;   height:42.5%;" onclick="answer3(false)"></div>
-    <div class="hotspot" data-n="2"  style="left:27%;  top:33%;   width:21.1%; height:43.8%;" onclick="answer3(false)"></div>
-    <div class="hotspot" data-n="3"  style="left:50.9%;top:32.8%; width:21.3%; height:42.5%;" onclick="answer3(false)"></div>
-    <div class="hotspot" data-n="4✓" style="left:75%;  top:33.6%; width:21.7%; height:42.2%;" onclick="answer3(true)"></div>
+    <div class="hotspot" data-n="1"  style="left:4%;   top:33.6%; width:20%;   height:42.5%;" onclick="answer3(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:27%;  top:33%;   width:21.1%; height:43.8%;" onclick="answer3(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:50.9%;top:32.8%; width:21.3%; height:42.5%;" onclick="answer3(3)"></div>
+    <div class="hotspot" data-n="4" style="left:75%;  top:33.6%; width:21.7%; height:42.2%;" onclick="answer3(4)"></div>
   </div>
 </div>
 
@@ -200,10 +312,10 @@
 <div id="screen-question4" class="screen">
   <img class="bg" src="images/q4.webp" alt="Was ist Hackfleisch?">
   <div class="hotspots">
-    <div class="hotspot" data-n="1"  style="left:19%;   top:25.5%; width:26.4%; height:28.9%;" onclick="answer4(false)"></div>
-    <div class="hotspot" data-n="2"  style="left:55.7%; top:25.4%; width:24.4%; height:30.9%;" onclick="answer4(false)"></div>
-    <div class="hotspot" data-n="3✓" style="left:18.3%; top:62%;   width:26.5%; height:31.1%;" onclick="answer4(true)"></div>
-    <div class="hotspot" data-n="4"  style="left:55.7%; top:62.4%; width:24.3%; height:29.8%;" onclick="answer4(false)"></div>
+    <div class="hotspot" data-n="1"  style="left:19%;   top:25.5%; width:26.4%; height:28.9%;" onclick="answer4(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:55.7%; top:25.4%; width:24.4%; height:30.9%;" onclick="answer4(2)"></div>
+    <div class="hotspot" data-n="3" style="left:18.3%; top:62%;   width:26.5%; height:31.1%;" onclick="answer4(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:55.7%; top:62.4%; width:24.3%; height:29.8%;" onclick="answer4(4)"></div>
   </div>
 </div>
 
@@ -212,15 +324,15 @@
   <img class="bg" src="images/q5.webp" alt="Nimm den Lauch!">
   <div class="hotspots">
     <!-- Fila superior -->
-    <div class="hotspot" data-n="1"  style="left:6.2%;  top:24%;   width:20.2%; height:28.2%;" onclick="answer5(false)"></div>
-    <div class="hotspot" data-n="2✓" style="left:33.5%; top:24.6%; width:16.3%; height:26.7%;" onclick="answer5(true)"></div>
-    <div class="hotspot" data-n="3"  style="left:56.8%; top:24.9%; width:14.7%; height:26.2%;" onclick="answer5(false)"></div>
-    <div class="hotspot" data-n="4"  style="left:77.3%; top:24.9%; width:15.8%; height:26.1%;" onclick="answer5(false)"></div>
+    <div class="hotspot" data-n="1"  style="left:6.2%;  top:24%;   width:20.2%; height:28.2%;" onclick="answer5(1)"></div>
+    <div class="hotspot" data-n="2" style="left:33.5%; top:24.6%; width:16.3%; height:26.7%;" onclick="answer5(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:56.8%; top:24.9%; width:14.7%; height:26.2%;" onclick="answer5(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:77.3%; top:24.9%; width:15.8%; height:26.1%;" onclick="answer5(4)"></div>
     <!-- Fila inferior -->
-    <div class="hotspot" data-n="5"  style="left:5.3%;  top:60.9%; width:21.3%; height:22.6%;" onclick="answer5(false)"></div>
-    <div class="hotspot" data-n="6"  style="left:32.5%; top:60.7%; width:17.6%; height:24.1%;" onclick="answer5(false)"></div>
-    <div class="hotspot" data-n="7"  style="left:54.8%; top:60.2%; width:13.7%; height:24%;"   onclick="answer5(false)"></div>
-    <div class="hotspot" data-n="8"  style="left:73%;   top:61.1%; width:20.1%; height:21.6%;" onclick="answer5(false)"></div>
+    <div class="hotspot" data-n="5"  style="left:5.3%;  top:60.9%; width:21.3%; height:22.6%;" onclick="answer5(5)"></div>
+    <div class="hotspot" data-n="6"  style="left:32.5%; top:60.7%; width:17.6%; height:24.1%;" onclick="answer5(6)"></div>
+    <div class="hotspot" data-n="7"  style="left:54.8%; top:60.2%; width:13.7%; height:24%;"   onclick="answer5(7)"></div>
+    <div class="hotspot" data-n="8"  style="left:73%;   top:61.1%; width:20.1%; height:21.6%;" onclick="answer5(8)"></div>
   </div>
 </div>
 
@@ -234,9 +346,9 @@
 <div id="screen-question12" class="screen">
   <img class="bg" src="images/q12.webp" alt="Nimm den Salz und Pfeffer aus der Mühle?">
   <div class="hotspots">
-    <div class="hotspot" data-n="1✓" style="left:6.6%;  top:27.4%; width:24.6%; height:63.8%;" onclick="answer12(true)"></div>
-    <div class="hotspot" data-n="2"  style="left:34.9%; top:36.4%; width:28.9%; height:47.7%;" onclick="answer12(false)"></div>
-    <div class="hotspot" data-n="3"  style="left:67.4%; top:36.2%; width:29%;   height:48.8%;" onclick="answer12(false)"></div>
+    <div class="hotspot" data-n="1" style="left:6.6%;  top:27.4%; width:24.6%; height:63.8%;" onclick="answer12(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:34.9%; top:36.4%; width:28.9%; height:47.7%;" onclick="answer12(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:67.4%; top:36.2%; width:29%;   height:48.8%;" onclick="answer12(3)"></div>
   </div>
 </div>
 
@@ -250,10 +362,10 @@
 <div id="screen-question11" class="screen">
   <img class="bg" src="images/q11.webp" alt="Welche ist die Crème fraîche 150g?">
   <div class="hotspots">
-    <div class="hotspot" data-n="1"  style="left:3.8%;  top:35%;   width:20%;   height:40%;"   onclick="answer11(false)"></div>
-    <div class="hotspot" data-n="2"  style="left:27.5%; top:36.6%; width:26.4%; height:40.2%;" onclick="answer11(false)"></div>
-    <div class="hotspot" data-n="3"  style="left:57.4%; top:36.6%; width:13.8%; height:39.4%;" onclick="answer11(false)"></div>
-    <div class="hotspot" data-n="4✓" style="left:76.3%; top:36.6%; width:19.7%; height:38.1%;" onclick="answer11(true)"></div>
+    <div class="hotspot" data-n="1"  style="left:3.8%;  top:35%;   width:20%;   height:40%;"   onclick="answer11(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:27.5%; top:36.6%; width:26.4%; height:40.2%;" onclick="answer11(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:57.4%; top:36.6%; width:13.8%; height:39.4%;" onclick="answer11(3)"></div>
+    <div class="hotspot" data-n="4" style="left:76.3%; top:36.6%; width:19.7%; height:38.1%;" onclick="answer11(4)"></div>
   </div>
 </div>
 
@@ -272,19 +384,238 @@
   <img class="q14-layer" src="images/q14_20min.webp" alt="">
   <img class="q14-layer" src="images/q14_25min.webp" alt="">
   <div class="hotspots">
-    <div class="hotspot" data-n="1"  style="left:70.8%; top:5.4%;  width:21.5%; height:12.4%;" onclick="answer14(false)"></div>
-    <div class="hotspot" data-n="2✓" style="left:70%;   top:24.9%; width:21.8%; height:12%;"   onclick="answer14(true)"></div>
-    <div class="hotspot" data-n="3"  style="left:70%;   top:44.5%; width:21.6%; height:12%;"   onclick="answer14(false)"></div>
-    <div class="hotspot" data-n="4"  style="left:70.2%; top:63.2%; width:21.5%; height:11.8%;" onclick="answer14(false)"></div>
-    <div class="hotspot" data-n="5"  style="left:70%;   top:82%;   width:21.9%; height:12.9%;" onclick="answer14(false)"></div>
+    <div class="hotspot" data-n="1"  style="left:70.8%; top:5.4%;  width:21.5%; height:12.4%;" onclick="answer14(1)"></div>
+    <div class="hotspot" data-n="2" style="left:70%;   top:24.9%; width:21.8%; height:12%;"   onclick="answer14(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:70%;   top:44.5%; width:21.6%; height:12%;"   onclick="answer14(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:70.2%; top:63.2%; width:21.5%; height:11.8%;" onclick="answer14(4)"></div>
+    <div class="hotspot" data-n="5"  style="left:70%;   top:82%;   width:21.9%; height:12.9%;" onclick="answer14(5)"></div>
   </div>
-  <button id="btn-chef14" onclick="playChefAudio14()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:47%; top:1%; width:10%; height:18%;"></button>
+  <button id="btn-chef14" onmouseenter="playChefAudio14()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:56.5%; top:2.5%; width:10%; height:18%;"></button>
 </div>
 
 <!-- PANTALLA 14b: Respuesta incorrecta (Baguettes Ofen) -->
 <div id="screen-wrong14" class="screen">
   <img class="bg" src="images/wrong14.webp" alt="Falsch">
   <button id="btn-back14" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question15" class="screen">
+  <img class="bg" src="images/q15.webp" alt="Was wird zuerst in die Pfanne gegeben?">
+  <img class="q15-layer" src="images/q15_oel.webp" alt="">
+  <img class="q15-layer" src="images/q15_hackenfleisch.webp" alt="">
+  <img class="q15-layer" src="images/q15_salzpfeffer.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1" style="left:70.2%; top:24.2%; width:21.7%; height:13%;"  onclick="answer15(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:69.6%; top:43.8%; width:21.5%; height:12.6%;" onclick="answer15(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:69.7%; top:62.2%; width:21.2%; height:15%;"   onclick="answer15(3)"></div>
+  </div>
+  <button id="btn-chef15" onmouseenter="playChefAudio15()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:68.2%; top:2.1%; width:10.2%; height:20.2%;"></button>
+</div>
+<div id="screen-wrong15" class="screen">
+  <img class="bg" src="images/wrong15.webp" alt="Falsch">
+  <button id="btn-back15" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question16" class="screen">
+  <img class="bg" src="images/q16b.webp" alt="Und dann?">
+  <img class="q16-layer" src="images/q16b_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1"  style="left:70.2%; top:24%;   width:21.3%; height:11.4%;" onclick="answer16(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:69.5%; top:42.3%; width:21.3%; height:13%;"   onclick="answer16(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:69.7%; top:61.9%; width:21%;   height:13.6%;" onclick="answer16(3)"></div>
+  </div>
+  <button id="btn-chef16" onmouseenter="playChefAudio16()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:57.5%; top:6.7%; width:10%; height:20%;"></button>
+</div>
+<div id="screen-wrong16" class="screen">
+  <img class="bg" src="images/wrong16.webp" alt="Falsch">
+  <button id="btn-back16" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question17" class="screen">
+  <img class="bg" src="images/q17b.webp" alt="Was kommt zuletzt in die Pfanne?">
+  <img class="q17-layer" src="images/q17b_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1"  style="left:70.5%; top:19.1%; width:21.3%; height:12.7%;" onclick="answer17(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:70.4%; top:42.4%; width:21.6%; height:12.9%;" onclick="answer17(2)"></div>
+    <div class="hotspot" data-n="3" style="left:71.8%; top:66.3%; width:20.1%; height:13.6%;" onclick="answer17(3)"></div>
+  </div>
+  <button id="btn-chef17" onmouseenter="playChefAudio17()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:55.1%; top:3%; width:10.6%; height:19.2%;"></button>
+</div>
+<div id="screen-wrong17" class="screen">
+  <img class="bg" src="images/wrong17b.webp" alt="Falsch">
+  <button id="btn-back17" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question18" class="screen">
+  <img class="bg" src="images/q18.webp" alt="Was macht man mit dem Lauch?">
+  <img class="q18-layer" src="images/q18_schneiden.webp" alt="">
+  <img class="q18-layer" src="images/q18_waschen.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1" style="left:5.1%;  top:28.9%; width:42.4%; height:50.9%;" onclick="answer18(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:53.1%; top:29.1%; width:42.7%; height:51%;"   onclick="answer18(2)"></div>
+  </div>
+  <button id="btn-chef18" onmouseenter="playChefAudio18()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:57.6%; top:4.2%; width:10%; height:20%;"></button>
+</div>
+<div id="screen-wrong18" class="screen">
+  <img class="bg" src="images/wrong18.webp" alt="Falsch">
+  <button id="btn-back18" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question19" class="screen">
+  <img class="bg" src="images/q19.webp" alt="Und dann?">
+  <img class="q19-layer" src="images/q19_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1" style="left:5%;    top:29.7%; width:42.4%; height:50.3%;" onclick="answer19(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:53.1%; top:29.8%; width:42.7%; height:49.9%;" onclick="answer19(2)"></div>
+  </div>
+  <button id="btn-chef19" onmouseenter="playChefAudio19()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:40%; top:2%; width:10%; height:20%;"></button>
+</div>
+<div id="screen-wrong19" class="screen">
+  <img class="bg" src="images/wrong19.webp" alt="Falsch">
+  <button id="btn-back19" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question20" class="screen">
+  <img class="bg" src="images/q20.webp" alt="Wie viele Minuten muss man mit anbraten?">
+  <img class="q20-layer" src="images/q20_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1" style="left:70.9%; top:6%;    width:21.4%; height:11.9%;" onclick="answer20(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:70.3%; top:25.1%; width:21.6%; height:11.8%;" onclick="answer20(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:70.3%; top:44%;   width:21.4%; height:12.3%;" onclick="answer20(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:70.2%; top:63%;   width:21.6%; height:11.8%;" onclick="answer20(4)"></div>
+    <div class="hotspot" data-n="5"  style="left:70.3%; top:82.1%; width:21.6%; height:12.3%;" onclick="answer20(5)"></div>
+  </div>
+  <button id="btn-chef20" onmouseenter="playChefAudio20()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:56.1%; top:18.3%; width:10%; height:20%;"></button>
+</div>
+<div id="screen-wrong20" class="screen">
+  <img class="bg" src="images/wrong20.webp" alt="Falsch">
+  <button id="btn-back20" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question21" class="screen">
+  <img class="bg" src="images/q21b.webp" alt="Wie viele Minuten muss man mit anbraten?">
+  <img class="q21-layer" src="images/q21b_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1" style="left:70.8%; top:8.7%;  width:21.4%; height:11.9%;" onclick="answer21(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:70.4%; top:26.6%; width:21.6%; height:11.8%;" onclick="answer21(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:70.3%; top:44%;   width:21.4%; height:12.3%;" onclick="answer21(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:70.2%; top:63%;   width:21.6%; height:11.8%;" onclick="answer21(4)"></div>
+    <div class="hotspot" data-n="5"  style="left:69.6%; top:82%;   width:21.6%; height:12.3%;" onclick="answer21(5)"></div>
+  </div>
+  <button id="btn-chef21" onmouseenter="playChefAudio21()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:54.1%; top:11.4%; width:10%; height:20%;"></button>
+</div>
+<div id="screen-wrong21" class="screen">
+  <img class="bg" src="images/wrong21.webp" alt="Falsch">
+  <button id="btn-back21" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question22" class="screen">
+  <img class="bg" src="images/q22.webp" alt="Was muss man hineingeben?">
+  <img class="q22-layer" src="images/q22_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1"  style="left:73.5%; top:42.4%; width:10.1%; height:16.2%;" onclick="answer22(1)"></div>
+    <div class="hotspot" data-n="2" style="left:73.6%; top:18%;   width:10.7%; height:16.4%;" onclick="answer22(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:73.2%; top:69%;   width:10.6%; height:18.6%;" onclick="answer22(3)"></div>
+  </div>
+  <button id="btn-chef22" onmouseenter="playChefAudio22()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:59.4%; top:2.9%; width:10%; height:20%;"></button>
+</div>
+<div id="screen-wrong22" class="screen">
+  <img class="bg" src="images/wrong22.webp" alt="Falsch">
+  <button id="btn-back22" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question23" class="screen">
+  <img class="bg" src="images/q23b.webp" alt="">
+  <img class="q23-layer" src="images/q23_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1" style="left:69.9%; top:62.5%; width:21.4%; height:11.9%;" onclick="answer23(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:70.1%; top:26.8%; width:21.6%; height:11.8%;" onclick="answer23(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:70.3%; top:44.7%; width:21.4%; height:11.9%;" onclick="answer23(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:70.9%; top:8.4%;  width:21.4%; height:11.9%;" onclick="answer23(4)"></div>
+    <div class="hotspot" data-n="5"  style="left:69.7%; top:81.9%; width:21.4%; height:11.9%;" onclick="answer23(5)"></div>
+  </div>
+  <button id="btn-chef23" onmouseenter="playChefAudio23()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:57.2%; top:12.2%; width:10%; height:20%;"></button>
+</div>
+<div id="screen-wrong23" class="screen">
+  <img class="bg" src="images/wrong23b.webp" alt="Falsch">
+  <button id="btn-back23" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question24" class="screen">
+  <img class="bg" src="images/q24.webp" alt="Wie lange muss man alles köcheln lassen?">
+  <img class="q24-layer" src="images/q24b_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1"  style="left:64.5%; top:19.8%; width:28.7%; height:16.4%;" onclick="answer24(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:63.7%; top:67.6%; width:29.3%; height:16.8%;" onclick="answer24(2)"></div>
+    <div class="hotspot" data-n="3" style="left:63.6%; top:43.6%; width:28.5%; height:16.3%;" onclick="answer24(3)"></div>
+  </div>
+  <button id="btn-chef24" onmouseenter="playChefAudio24()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:51.9%; top:8.7%; width:10%; height:20.7%;"></button>
+</div>
+<div id="screen-wrong24" class="screen">
+  <img class="bg" src="images/wrong24b.webp" alt="Falsch">
+  <button id="btn-back24" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question25" class="screen">
+  <img class="bg" src="images/q25.webp" alt="Nachdem man den Käse eingerührt und schmelzen lassen hat. Was macht man dann?">
+  <img class="q25-layer" src="images/q25b_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1" style="left:64.4%; top:20.1%; width:28.9%; height:16%;"   onclick="answer25(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:63.6%; top:43.6%; width:28.8%; height:17.2%;" onclick="answer25(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:63.8%; top:68.1%; width:29.5%; height:16.2%;" onclick="answer25(3)"></div>
+  </div>
+  <button id="btn-chef25" onmouseenter="playChefAudio25()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:50.3%; top:2.7%; width:11.6%; height:23.1%;"></button>
+</div>
+<div id="screen-wrong25" class="screen">
+  <img class="bg" src="images/wrong25b.webp" alt="Falsch">
+  <button id="btn-back25" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question26" class="screen">
+  <img class="bg" src="images/q26.webp" alt="14. Zuletzt?">
+  <img class="q26-layer" src="images/q26_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1"  style="left:64.3%; top:19.4%; width:28.7%; height:16.1%;" onclick="answer26(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:63.6%; top:43.7%; width:28.7%; height:16.5%;" onclick="answer26(2)"></div>
+    <div class="hotspot" data-n="3" style="left:63.2%; top:67.1%; width:29.9%; height:16.4%;" onclick="answer26(3)"></div>
+  </div>
+  <button id="btn-chef26" onmouseenter="playChefAudio26()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:46.5%; top:1.9%; width:14.3%; height:25.9%;"></button>
+</div>
+<div id="screen-wrong26" class="screen">
+  <img class="bg" src="images/wrong26.webp" alt="Falsch">
+  <button id="btn-back26" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question27" class="screen">
+  <img class="bg" src="images/q27.webp" alt="15. Wir sind fast fertig! Was machen wir jetzt?">
+  <img class="q27-layer" src="images/q27_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1" style="left:6.7%;  top:30.9%; width:43.3%; height:51.4%;" onclick="answer27(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:53.1%; top:31.3%; width:42%;   height:51.3%;" onclick="answer27(2)"></div>
+  </div>
+  <button id="btn-chef27" onmouseenter="playChefAudio27()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:78.1%; top:0.6%; width:13.7%; height:26.3%;"></button>
+</div>
+<div id="screen-wrong27" class="screen">
+  <img class="bg" src="images/wrong27.webp" alt="Falsch">
+  <button id="btn-back27" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-question28" class="screen">
+  <img class="bg" src="images/q28.webp" alt="16. Zum Schluss?">
+  <img class="q28-layer" src="images/q28_options.webp" alt="">
+  <div class="hotspots">
+    <div class="hotspot" data-n="1"  style="left:6.7%;  top:30.9%; width:43.3%; height:51.4%;" onclick="answer28(1)"></div>
+    <div class="hotspot" data-n="2" style="left:53.1%; top:31.3%; width:42%;   height:51.3%;" onclick="answer28(2)"></div>
+  </div>
+  <button id="btn-chef28" onmouseenter="playChefAudio28()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:78.1%; top:0.6%; width:13.7%; height:26.3%;"></button>
+</div>
+<div id="screen-wrong28" class="screen">
+  <img class="bg" src="images/wrong28.webp" alt="Falsch">
+  <button id="btn-back28" onclick="showQuestion()"></button>
+</div>
+
+<div id="screen-final" class="screen">
+  <img class="bg" src="images/final.webp" alt="Du hast es geschafft!">
 </div>
 
 <!-- PANTALLA 13b: Respuesta incorrecta (Ofen Grad) -->
@@ -302,24 +633,24 @@
   <img class="q13-layer" src="images/q13_170.webp" alt="">
   <img class="q13-layer" src="images/q13_165.webp" alt="">
   <div class="hotspots">
-    <div class="hotspot" data-n="1"  style="left:71%;   top:5.8%;  width:21.4%; height:12.6%;" onclick="answer13(false)"></div>
-    <div class="hotspot" data-n="2"  style="left:69.7%; top:25.5%; width:22.1%; height:12.1%;" onclick="answer13(false)"></div>
-    <div class="hotspot" data-n="3"  style="left:70.1%; top:43.9%; width:21.6%; height:13%;"   onclick="answer13(false)"></div>
-    <div class="hotspot" data-n="4✓" style="left:69.9%; top:63.1%; width:21.7%; height:12.4%;" onclick="answer13(true)"></div>
-    <div class="hotspot" data-n="5"  style="left:70%;   top:82.4%; width:21.6%; height:12.7%;" onclick="answer13(false)"></div>
+    <div class="hotspot" data-n="1"  style="left:71%;   top:5.8%;  width:21.4%; height:12.6%;" onclick="answer13(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:69.7%; top:25.5%; width:22.1%; height:12.1%;" onclick="answer13(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:70.1%; top:43.9%; width:21.6%; height:13%;"   onclick="answer13(3)"></div>
+    <div class="hotspot" data-n="4" style="left:69.9%; top:63.1%; width:21.7%; height:12.4%;" onclick="answer13(4)"></div>
+    <div class="hotspot" data-n="5"  style="left:70%;   top:82.4%; width:21.6%; height:12.7%;" onclick="answer13(5)"></div>
   </div>
-  <button id="btn-chef13" onclick="playChefAudio13()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:47%; top:1%; width:10%; height:18%;"></button>
+  <button id="btn-chef13" onmouseenter="playChefAudio13()" style="position:absolute; background:transparent; border:none; cursor:pointer; touch-action:manipulation; left:52%; top:1.3%; width:10%; height:18%;"></button>
 </div>
 
 <!-- PANTALLA 10: Pregunta Schmelzkäse -->
 <div id="screen-question10" class="screen">
   <img class="bg" src="images/q10.webp" alt="Was ist Schmelzkäse?">
   <div class="hotspots">
-    <div class="hotspot" data-n="1"  style="left:8.4%;  top:30.7%; width:22.2%; height:28%;"   onclick="answer10(false)"></div>
-    <div class="hotspot" data-n="2"  style="left:40.1%; top:30%;   width:23.3%; height:29.1%;"  onclick="answer10(false)"></div>
-    <div class="hotspot" data-n="3✓" style="left:72.3%; top:30.9%; width:20%;   height:27.2%;"  onclick="answer10(true)"></div>
-    <div class="hotspot" data-n="4"  style="left:25.8%; top:69.8%; width:21.6%; height:23.5%;"  onclick="answer10(false)"></div>
-    <div class="hotspot" data-n="5"  style="left:57.4%; top:69.7%; width:21.7%; height:23.7%;"  onclick="answer10(false)"></div>
+    <div class="hotspot" data-n="1"  style="left:8.4%;  top:30.7%; width:22.2%; height:28%;"   onclick="answer10(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:40.1%; top:30%;   width:23.3%; height:29.1%;"  onclick="answer10(2)"></div>
+    <div class="hotspot" data-n="3" style="left:72.3%; top:30.9%; width:20%;   height:27.2%;"  onclick="answer10(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:25.8%; top:69.8%; width:21.6%; height:23.5%;"  onclick="answer10(4)"></div>
+    <div class="hotspot" data-n="5"  style="left:57.4%; top:69.7%; width:21.7%; height:23.7%;"  onclick="answer10(5)"></div>
   </div>
 </div>
 
@@ -333,10 +664,10 @@
 <div id="screen-question9" class="screen">
   <img class="bg" src="images/q9.webp" alt="Was sind Gemüsebrühwürfel?">
   <div class="hotspots">
-    <div class="hotspot" data-n="1✓" style="left:4.1%;  top:35.9%; width:20.3%; height:37%;"   onclick="answer9(true)"></div>
-    <div class="hotspot" data-n="2"  style="left:28.8%; top:36.3%; width:20.1%; height:36%;"   onclick="answer9(false)"></div>
-    <div class="hotspot" data-n="3"  style="left:52.8%; top:36.1%; width:20.2%; height:36.2%;" onclick="answer9(false)"></div>
-    <div class="hotspot" data-n="4"  style="left:77.2%; top:37%;   width:19.5%; height:33.4%;" onclick="answer9(false)"></div>
+    <div class="hotspot" data-n="1" style="left:4.1%;  top:35.9%; width:20.3%; height:37%;"   onclick="answer9(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:28.8%; top:36.3%; width:20.1%; height:36%;"   onclick="answer9(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:52.8%; top:36.1%; width:20.2%; height:36.2%;" onclick="answer9(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:77.2%; top:37%;   width:19.5%; height:33.4%;" onclick="answer9(4)"></div>
   </div>
 </div>
 
@@ -350,10 +681,10 @@
 <div id="screen-question8" class="screen">
   <img class="bg" src="images/q8.webp" alt="Welche ist ein Zwiebelpulver?">
   <div class="hotspots">
-    <div class="hotspot" data-n="1✓" style="left:4.2%;  top:33.4%; width:21.3%; height:31.7%;" onclick="answer8(true)"></div>
-    <div class="hotspot" data-n="2"  style="left:31.7%; top:33.2%; width:17.6%; height:31%;"   onclick="answer8(false)"></div>
-    <div class="hotspot" data-n="3"  style="left:54.5%; top:33%;   width:18.3%; height:32.3%;" onclick="answer8(false)"></div>
-    <div class="hotspot" data-n="4"  style="left:77.1%; top:32.6%; width:20%;   height:32.6%;" onclick="answer8(false)"></div>
+    <div class="hotspot" data-n="1" style="left:4.2%;  top:33.4%; width:21.3%; height:31.7%;" onclick="answer8(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:31.7%; top:33.2%; width:17.6%; height:31%;"   onclick="answer8(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:54.5%; top:33%;   width:18.3%; height:32.3%;" onclick="answer8(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:77.1%; top:32.6%; width:20%;   height:32.6%;" onclick="answer8(4)"></div>
   </div>
 </div>
 
@@ -367,10 +698,10 @@
 <div id="screen-question7" class="screen">
   <img class="bg" src="images/q7.webp" alt="Nimm Wasser!">
   <div class="hotspots">
-    <div class="hotspot" data-n="1"  style="left:5.5%;  top:31.3%; width:20.2%; height:40.9%;" onclick="answer7(false)"></div>
-    <div class="hotspot" data-n="2"  style="left:30.8%; top:30%;   width:14.9%; height:42.6%;" onclick="answer7(false)"></div>
-    <div class="hotspot" data-n="3✓" style="left:51.4%; top:29.6%; width:17.9%; height:43.1%;" onclick="answer7(true)"></div>
-    <div class="hotspot" data-n="4"  style="left:74.3%; top:30.2%; width:21.6%; height:43.1%;" onclick="answer7(false)"></div>
+    <div class="hotspot" data-n="1"  style="left:5.5%;  top:31.3%; width:20.2%; height:40.9%;" onclick="answer7(1)"></div>
+    <div class="hotspot" data-n="2"  style="left:30.8%; top:30%;   width:14.9%; height:42.6%;" onclick="answer7(2)"></div>
+    <div class="hotspot" data-n="3" style="left:51.4%; top:29.6%; width:17.9%; height:43.1%;" onclick="answer7(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:74.3%; top:30.2%; width:21.6%; height:43.1%;" onclick="answer7(4)"></div>
   </div>
 </div>
 
@@ -384,10 +715,10 @@
 <div id="screen-question6" class="screen">
   <img class="bg" src="images/q6.webp" alt="Welche ist ein Knoblauchpulver?">
   <div class="hotspots">
-    <div class="hotspot" data-n="1"  style="left:4.1%;  top:33.3%; width:21.6%; height:31.5%;" onclick="answer6(false)"></div>
-    <div class="hotspot" data-n="2✓" style="left:31.7%; top:32.4%; width:17.8%; height:32.4%;" onclick="answer6(true)"></div>
-    <div class="hotspot" data-n="3"  style="left:54.6%; top:33.1%; width:18.8%; height:32%;"   onclick="answer6(false)"></div>
-    <div class="hotspot" data-n="4"  style="left:77.4%; top:32.9%; width:19.7%; height:32%;"   onclick="answer6(false)"></div>
+    <div class="hotspot" data-n="1"  style="left:4.1%;  top:33.3%; width:21.6%; height:31.5%;" onclick="answer6(1)"></div>
+    <div class="hotspot" data-n="2" style="left:31.7%; top:32.4%; width:17.8%; height:32.4%;" onclick="answer6(2)"></div>
+    <div class="hotspot" data-n="3"  style="left:54.6%; top:33.1%; width:18.8%; height:32%;"   onclick="answer6(3)"></div>
+    <div class="hotspot" data-n="4"  style="left:77.4%; top:32.9%; width:19.7%; height:32%;"   onclick="answer6(4)"></div>
   </div>
 </div>
 
@@ -428,41 +759,82 @@
 
 </div>
 
+</div><!-- /game -->
+
 <div id="debug-panel">
   <div id="debug-toggle" onclick="document.getElementById('debug-body').classList.toggle('open')">⚙ DEBUG</div>
   <div id="debug-body">
-    <div style="margin-bottom:6px">
-      <button onclick="showScreen('screen-question')"  style="margin:2px;padding:2px 5px;font-size:10px">Q1</button>
-      <button onclick="showScreen('screen-question2')" style="margin:2px;padding:2px 5px;font-size:10px">Q2</button>
-      <button onclick="showScreen('screen-question3')" style="margin:2px;padding:2px 5px;font-size:10px">Q3</button>
-      <button onclick="showScreen('screen-question4')" style="margin:2px;padding:2px 5px;font-size:10px">Q4</button>
-      <button onclick="showScreen('screen-question5')" style="margin:2px;padding:2px 5px;font-size:10px">Q5</button>
-      <button onclick="showScreen('screen-question6')" style="margin:2px;padding:2px 5px;font-size:10px">Q6</button>
-      <button onclick="showScreen('screen-question7')" style="margin:2px;padding:2px 5px;font-size:10px">Q7</button>
-      <button onclick="showScreen('screen-question8')" style="margin:2px;padding:2px 5px;font-size:10px">Q8</button>
-      <button onclick="showScreen('screen-question9')"  style="margin:2px;padding:2px 5px;font-size:10px">Q9</button>
-      <button onclick="showScreen('screen-question10')" style="margin:2px;padding:2px 5px;font-size:10px">Q10</button>
-      <button onclick="showScreen('screen-question11')" style="margin:2px;padding:2px 5px;font-size:10px">Q11</button>
-      <button onclick="showScreen('screen-question12')"  style="margin:2px;padding:2px 5px;font-size:10px">Q12</button>
-      <button onclick="showScreen('screen-transition1')" style="margin:2px;padding:2px 5px;font-size:10px;background:#555;color:#ff0">T1</button>
-      <button onclick="showScreen('screen-question13')"  style="margin:2px;padding:2px 5px;font-size:10px">Q13</button>
-      <button onclick="showScreen('screen-question14')"  style="margin:2px;padding:2px 5px;font-size:10px">Q14</button>
-      <button onclick="showScreen('screen-wrong13')"    style="margin:2px;padding:2px 5px;font-size:10px">W13</button>
-      <button onclick="showScreen('screen-wrong14')"    style="margin:2px;padding:2px 5px;font-size:10px">W14</button>
-      <br>
-      <button onclick="showScreen('screen-wrong')"     style="margin:2px;padding:2px 5px;font-size:10px">W1</button>
-      <button onclick="showScreen('screen-wrong2')"    style="margin:2px;padding:2px 5px;font-size:10px">W2</button>
-      <button onclick="showScreen('screen-wrong3')"    style="margin:2px;padding:2px 5px;font-size:10px">W3</button>
-      <button onclick="showScreen('screen-wrong4')"    style="margin:2px;padding:2px 5px;font-size:10px">W4</button>
-      <button onclick="showScreen('screen-wrong5')"    style="margin:2px;padding:2px 5px;font-size:10px">W5</button>
-      <button onclick="showScreen('screen-wrong6')"    style="margin:2px;padding:2px 5px;font-size:10px">W6</button>
-      <button onclick="showScreen('screen-wrong7')"    style="margin:2px;padding:2px 5px;font-size:10px">W7</button>
-      <button onclick="showScreen('screen-wrong8')"    style="margin:2px;padding:2px 5px;font-size:10px">W8</button>
-      <button onclick="showScreen('screen-wrong9')"    style="margin:2px;padding:2px 5px;font-size:10px">W9</button>
-      <button onclick="showScreen('screen-wrong10')"   style="margin:2px;padding:2px 5px;font-size:10px">W10</button>
-      <button onclick="showScreen('screen-wrong11')"   style="margin:2px;padding:2px 5px;font-size:10px">W11</button>
-      <button onclick="showScreen('screen-wrong12')"   style="margin:2px;padding:2px 5px;font-size:10px">W12</button>
+    <div class="dbrow">
+      <b style="color:#ff0;font-size:9px">Q1-12:</b>
+      <button onclick="showScreen('screen-question')"   style="margin:2px;padding:2px 4px;font-size:10px">Q1</button>
+      <button onclick="showScreen('screen-question2')"  style="margin:2px;padding:2px 4px;font-size:10px">Q2</button>
+      <button onclick="showScreen('screen-question3')"  style="margin:2px;padding:2px 4px;font-size:10px">Q3</button>
+      <button onclick="showScreen('screen-question4')"  style="margin:2px;padding:2px 4px;font-size:10px">Q4</button>
+      <button onclick="showScreen('screen-question5')"  style="margin:2px;padding:2px 4px;font-size:10px">Q5</button>
+      <button onclick="showScreen('screen-question6')"  style="margin:2px;padding:2px 4px;font-size:10px">Q6</button>
+      <button onclick="showScreen('screen-question7')"  style="margin:2px;padding:2px 4px;font-size:10px">Q7</button>
+      <button onclick="showScreen('screen-question8')"  style="margin:2px;padding:2px 4px;font-size:10px">Q8</button>
+      <button onclick="showScreen('screen-question9')"  style="margin:2px;padding:2px 4px;font-size:10px">Q9</button>
+      <button onclick="showScreen('screen-question10')" style="margin:2px;padding:2px 4px;font-size:10px">Q10</button>
+      <button onclick="showScreen('screen-question11')" style="margin:2px;padding:2px 4px;font-size:10px">Q11</button>
+      <button onclick="showScreen('screen-question12')" style="margin:2px;padding:2px 4px;font-size:10px">Q12</button>
     </div>
+    <div class="dbrow">
+      <b style="color:#f88;font-size:9px">W1-12:</b>
+      <button onclick="showScreen('screen-wrong')"    style="margin:2px;padding:2px 4px;font-size:10px">W1</button>
+      <button onclick="showScreen('screen-wrong2')"   style="margin:2px;padding:2px 4px;font-size:10px">W2</button>
+      <button onclick="showScreen('screen-wrong3')"   style="margin:2px;padding:2px 4px;font-size:10px">W3</button>
+      <button onclick="showScreen('screen-wrong4')"   style="margin:2px;padding:2px 4px;font-size:10px">W4</button>
+      <button onclick="showScreen('screen-wrong5')"   style="margin:2px;padding:2px 4px;font-size:10px">W5</button>
+      <button onclick="showScreen('screen-wrong6')"   style="margin:2px;padding:2px 4px;font-size:10px">W6</button>
+      <button onclick="showScreen('screen-wrong7')"   style="margin:2px;padding:2px 4px;font-size:10px">W7</button>
+      <button onclick="showScreen('screen-wrong8')"   style="margin:2px;padding:2px 4px;font-size:10px">W8</button>
+      <button onclick="showScreen('screen-wrong9')"   style="margin:2px;padding:2px 4px;font-size:10px">W9</button>
+      <button onclick="showScreen('screen-wrong10')"  style="margin:2px;padding:2px 4px;font-size:10px">W10</button>
+      <button onclick="showScreen('screen-wrong11')"  style="margin:2px;padding:2px 4px;font-size:10px">W11</button>
+      <button onclick="showScreen('screen-wrong12')"  style="margin:2px;padding:2px 4px;font-size:10px">W12</button>
+      <button onclick="showScreen('screen-transition1')" style="margin:2px;padding:2px 4px;font-size:10px;background:#555;color:#ff0">T1</button>
+    </div>
+    <div class="dbrow">
+      <b style="color:#ff0;font-size:9px">Q13-28:</b>
+      <button onclick="showScreen('screen-question13')" style="margin:2px;padding:2px 4px;font-size:10px">Q13</button>
+      <button onclick="showScreen('screen-question14')" style="margin:2px;padding:2px 4px;font-size:10px">Q14</button>
+      <button onclick="showScreen('screen-question15')" style="margin:2px;padding:2px 4px;font-size:10px">Q15</button>
+      <button onclick="showScreen('screen-question16')" style="margin:2px;padding:2px 4px;font-size:10px">Q16</button>
+      <button onclick="showScreen('screen-question17')" style="margin:2px;padding:2px 4px;font-size:10px;color:#888">Q17</button>
+      <button onclick="showScreen('screen-question18')" style="margin:2px;padding:2px 4px;font-size:10px">Q18</button>
+      <button onclick="showScreen('screen-question19')" style="margin:2px;padding:2px 4px;font-size:10px">Q19</button>
+      <button onclick="showScreen('screen-question20')" style="margin:2px;padding:2px 4px;font-size:10px">Q20</button>
+      <button onclick="showScreen('screen-question21')" style="margin:2px;padding:2px 4px;font-size:10px">Q21</button>
+      <button onclick="showScreen('screen-question22')" style="margin:2px;padding:2px 4px;font-size:10px">Q22</button>
+      <button onclick="showScreen('screen-question23')" style="margin:2px;padding:2px 4px;font-size:10px">Q23</button>
+      <button onclick="showScreen('screen-question24')" style="margin:2px;padding:2px 4px;font-size:10px">Q24</button>
+      <button onclick="showScreen('screen-question25')" style="margin:2px;padding:2px 4px;font-size:10px">Q25</button>
+      <button onclick="showScreen('screen-question26')" style="margin:2px;padding:2px 4px;font-size:10px">Q26</button>
+      <button onclick="showScreen('screen-question27')" style="margin:2px;padding:2px 4px;font-size:10px">Q27</button>
+      <button onclick="showScreen('screen-question28')" style="margin:2px;padding:2px 4px;font-size:10px">Q28</button>
+      <button onclick="showScreen('screen-final')"      style="margin:2px;padding:2px 4px;font-size:10px;background:#4a0">FINAL</button>
+    </div>
+    <div class="dbrow">
+      <b style="color:#f88;font-size:9px">W13-28:</b>
+      <button onclick="showScreen('screen-wrong13')"  style="margin:2px;padding:2px 4px;font-size:10px">W13</button>
+      <button onclick="showScreen('screen-wrong14')"  style="margin:2px;padding:2px 4px;font-size:10px">W14</button>
+      <button onclick="showScreen('screen-wrong15')"  style="margin:2px;padding:2px 4px;font-size:10px">W15</button>
+      <button onclick="showScreen('screen-wrong16')"  style="margin:2px;padding:2px 4px;font-size:10px">W16</button>
+      <button onclick="showScreen('screen-wrong17')"  style="margin:2px;padding:2px 4px;font-size:10px;color:#888">W17</button>
+      <button onclick="showScreen('screen-wrong18')"  style="margin:2px;padding:2px 4px;font-size:10px">W18</button>
+      <button onclick="showScreen('screen-wrong19')"  style="margin:2px;padding:2px 4px;font-size:10px">W19</button>
+      <button onclick="showScreen('screen-wrong20')"  style="margin:2px;padding:2px 4px;font-size:10px">W20</button>
+      <button onclick="showScreen('screen-wrong21')"  style="margin:2px;padding:2px 4px;font-size:10px">W21</button>
+      <button onclick="showScreen('screen-wrong22')"  style="margin:2px;padding:2px 4px;font-size:10px">W22</button>
+      <button onclick="showScreen('screen-wrong23')"  style="margin:2px;padding:2px 4px;font-size:10px">W23</button>
+      <button onclick="showScreen('screen-wrong24')"  style="margin:2px;padding:2px 4px;font-size:10px">W24</button>
+      <button onclick="showScreen('screen-wrong25')"  style="margin:2px;padding:2px 4px;font-size:10px">W25</button>
+      <button onclick="showScreen('screen-wrong26')"  style="margin:2px;padding:2px 4px;font-size:10px">W26</button>
+      <button onclick="showScreen('screen-wrong27')"  style="margin:2px;padding:2px 4px;font-size:10px">W27</button>
+      <button onclick="showScreen('screen-wrong28')"  style="margin:2px;padding:2px 4px;font-size:10px">W28</button>
+    </div>
+    <div>
     <div id="debug-values">Cargando...</div>
   </div>
 </div>
@@ -587,6 +959,24 @@
     makeButtonDraggable(document.getElementById('btn-los1'),   () => document.querySelector('#screen-transition1 img.bg'));
     makeButtonDraggable(document.getElementById('btn-chef13'), () => document.querySelector('#screen-question13 img.bg'));
     makeButtonDraggable(document.getElementById('btn-chef14'), () => document.querySelector('#screen-question14 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef15'), () => document.querySelector('#screen-question15 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef16'), () => document.querySelector('#screen-question16 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back16'), () => document.querySelector('#screen-wrong16 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef17'), () => document.querySelector('#screen-question17 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef18'), () => document.querySelector('#screen-question18 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef20'), () => document.querySelector('#screen-question20 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef21'), () => document.querySelector('#screen-question21 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef22'), () => document.querySelector('#screen-question22 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef23'), () => document.querySelector('#screen-question23 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef24'), () => document.querySelector('#screen-question24 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef25'), () => document.querySelector('#screen-question25 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back25'), () => document.querySelector('#screen-wrong25 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef26'), () => document.querySelector('#screen-question26 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back26'), () => document.querySelector('#screen-wrong26 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef27'), () => document.querySelector('#screen-question27 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back27'), () => document.querySelector('#screen-wrong27 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef28'), () => document.querySelector('#screen-question28 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back28'), () => document.querySelector('#screen-wrong28 img.bg'));
     makeButtonDraggable(btnBack,  () => document.querySelector('#screen-wrong  img.bg'));
     makeButtonDraggable(document.getElementById('btn-back2'), () => document.querySelector('#screen-wrong2 img.bg'));
     makeButtonDraggable(document.getElementById('btn-back3'), () => document.querySelector('#screen-wrong3 img.bg'));
@@ -601,10 +991,20 @@
     makeButtonDraggable(document.getElementById('btn-back12'), () => document.querySelector('#screen-wrong12 img.bg'));
     makeButtonDraggable(document.getElementById('btn-back13'), () => document.querySelector('#screen-wrong13 img.bg'));
     makeButtonDraggable(document.getElementById('btn-back14'), () => document.querySelector('#screen-wrong14 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back15'), () => document.querySelector('#screen-wrong15 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back17'), () => document.querySelector('#screen-wrong17 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back18'), () => document.querySelector('#screen-wrong18 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-chef19'), () => document.querySelector('#screen-question19 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back19'), () => document.querySelector('#screen-wrong19 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back20'), () => document.querySelector('#screen-wrong20 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back21'), () => document.querySelector('#screen-wrong21 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back22'), () => document.querySelector('#screen-wrong22 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back23'), () => document.querySelector('#screen-wrong23 img.bg'));
+    makeButtonDraggable(document.getElementById('btn-back24'), () => document.querySelector('#screen-wrong24 img.bg'));
 
 
     function updatePanel() {
-      const activeScreen = document.querySelector('.screen.active');
+      const activeScreen = document.querySelector('.screen.visible');
       const screenId = activeScreen ? activeScreen.id : '?';
       let txt = `[ ${screenId} ]\n`;
       activeScreen && activeScreen.querySelectorAll('.hotspot').forEach(h => {
@@ -667,59 +1067,120 @@
         const b = document.getElementById('btn-back14');
         txt += `\nZurück14\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
       }
+      if (screenId === 'screen-wrong15') {
+        const b = document.getElementById('btn-back15');
+        txt += `\nZurück15\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
+      }
+      if (screenId === 'screen-wrong17') {
+        const b = document.getElementById('btn-back17');
+        txt += `\nZurück17\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
+      }
+      if (screenId === 'screen-wrong18') {
+        const b = document.getElementById('btn-back18');
+        txt += `\nZurück18\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
+      }
+      if (screenId === 'screen-wrong21') {
+        const b = document.getElementById('btn-back21');
+        txt += `\nZurück21\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
+      }
+      if (screenId === 'screen-wrong19') {
+        const b = document.getElementById('btn-back19');
+        txt += `\nZurück19\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
+      }
+      if (screenId === 'screen-wrong20') {
+        const b = document.getElementById('btn-back20');
+        txt += `\nZurück20\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
+      }
+      if (screenId === 'screen-wrong22') {
+        const b = document.getElementById('btn-back22');
+        txt += `\nZurück22\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
+      }
+      if (screenId === 'screen-wrong23') {
+        const b = document.getElementById('btn-back23');
+        txt += `\nZurück23\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
+      }
+      if (screenId === 'screen-wrong24') {
+        const b = document.getElementById('btn-back24');
+        txt += `\nZurück24\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
+      }
+      if (screenId === 'screen-wrong25') {
+        const b = document.getElementById('btn-back25');
+        txt += `\nZurück25\n  left:${b.style.left} top:${b.style.top} width:${b.style.width} height:${b.style.height}`;
+      }
       document.getElementById('debug-values').textContent = txt;
     }
     updatePanel();
   }
 
+  let transitioning = false;
+
+  function mainHover(src) {
+    const bg = document.getElementById('main-bg');
+    bg.src = src;
+    bg.style.opacity = '1';
+  }
+  function mainHoverOut() {
+    document.getElementById('main-bg').style.opacity = '0';
+  }
+
+  function startSection(n) {
+    if (n === 1) showScreen('screen-recipe');
+    else showScreen('screen-question13');
+  }
+
   function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+    const prev = document.querySelector('.screen.visible');
+    const next = document.getElementById(id);
+    if (prev && prev !== next) {
+      prev.classList.remove('visible');
+    }
+    requestAnimationFrame(() => next.classList.add('visible'));
+    const lock = document.getElementById('click-lock');
+    lock.style.display = 'block';
+    transitioning = true;
+    setTimeout(() => { lock.style.display = 'none'; transitioning = false; }, 900);
     if (id === 'screen-question13') initQ13();
     if (id === 'screen-question14') initQ14();
+    if (id === 'screen-question15') initQ15();
+    if (id === 'screen-question16') initQ16();
+    if (id === 'screen-question17') initQ17();
+    if (id === 'screen-question18') initQ18();
+    if (id === 'screen-question19') initQ19();
+    if (id === 'screen-question20') initQ20();
+    if (id === 'screen-question21') initQ21();
+    if (id === 'screen-question22') initQ22();
+    if (id === 'screen-question23') initQ23();
+    if (id === 'screen-question24') initQ24();
+    if (id === 'screen-question25') initQ25();
+    if (id === 'screen-question26') initQ26();
+    if (id === 'screen-question27') initQ27();
+    if (id === 'screen-question28') initQ28();
+    if (id === 'screen-final') playAudio('audio/final.mp3');
   }
 
   function initQ13() {
+    playChefAudio13();
     const layers = document.querySelectorAll('.q13-layer');
     layers.forEach(l => { l.style.transition = 'none'; l.style.opacity = '0'; });
-    if (document.body.classList.contains('debug')) {
-      layers.forEach(l => { l.style.opacity = '1'; });
-      return;
-    }
-    const delays = [500, 1000, 1500, 2000, 2500];
-    layers.forEach((l, i) => {
-      setTimeout(() => {
-        l.style.transition = 'opacity 0.6s ease';
-        l.style.opacity = '1';
-      }, delays[i]);
-    });
+    if (document.body.classList.contains('debug')) { layers.forEach(l => l.style.opacity = '1'); return; }
+    setTimeout(() => { layers.forEach(l => { l.style.transition = 'opacity 0.6s ease'; l.style.opacity = '1'; }); }, 500);
   }
 
-  function playChefAudio13() {
-    // audio: añadir cuando se tenga el archivo
-  }
+  function playChefAudio13() { playAudio('audio/chef_q13.mp3'); }
 
   function initQ14() {
+    playChefAudio14();
     const layers = document.querySelectorAll('.q14-layer');
     layers.forEach(l => { l.style.transition = 'none'; l.style.opacity = '0'; });
-    if (document.body.classList.contains('debug')) {
-      layers.forEach(l => { l.style.opacity = '1'; });
-      return;
-    }
-    const delays = [500, 1000, 1500, 2000, 2500];
-    layers.forEach((l, i) => {
-      setTimeout(() => {
-        l.style.transition = 'opacity 0.6s ease';
-        l.style.opacity = '1';
-      }, delays[i]);
-    });
+    if (document.body.classList.contains('debug')) { layers.forEach(l => l.style.opacity = '1'); return; }
+    setTimeout(() => { layers.forEach(l => { l.style.transition = 'opacity 0.6s ease'; l.style.opacity = '1'; }); }, 500);
   }
 
-  function playChefAudio14() {
-    // audio: añadir cuando se tenga el archivo
-  }
+  function playChefAudio14() { playAudio('audio/chef_q14.mp3'); }
 
-  function answer13(correct) {
+  function answer13(opt) {
+    if (transitioning) return;
+    const correct = _chk('q13', opt);
     if (correct) {
       showScreen('screen-question14');
     } else {
@@ -728,13 +1189,273 @@
     }
   }
 
-  function answer14(correct) {
+  function answer14(opt) {
+    if (transitioning) return;
+    const correct = _chk('q14', opt);
     if (correct) {
-      alert('¡Richtig! Fin del prototipo por ahora.');
+      showScreen('screen-question15');
     } else {
       lastQuestion = 'screen-question14';
       showScreen('screen-wrong14');
     }
+  }
+
+  function initQ15() {
+    playChefAudio15();
+    const layers = document.querySelectorAll('.q15-layer');
+    layers.forEach(l => { l.style.transition = 'none'; l.style.opacity = '0'; });
+    if (document.body.classList.contains('debug')) { layers.forEach(l => l.style.opacity = '1'); return; }
+    setTimeout(() => { layers.forEach(l => { l.style.transition = 'opacity 0.6s ease'; l.style.opacity = '1'; }); }, 500);
+  }
+
+  function playChefAudio15() { playAudio('audio/chef_q15.mp3'); }
+
+  function answer15(opt) {
+    if (transitioning) return;
+    const correct = _chk('q15', opt);
+    if (correct) {
+      showScreen('screen-question16');
+    } else {
+      lastQuestion = 'screen-question15';
+      showScreen('screen-wrong15');
+    }
+  }
+
+  function initQ16() {
+    playChefAudio16();
+    const layer = document.querySelector('.q16-layer');
+    layer.style.transition = 'none'; layer.style.opacity = '0';
+    if (document.body.classList.contains('debug')) { layer.style.opacity = '1'; return; }
+    setTimeout(() => { layer.style.transition = 'opacity 0.6s ease'; layer.style.opacity = '1'; }, 500);
+  }
+  function playChefAudio16() { playAudio('audio/chef_q16.mp3'); }
+  function answer16(opt) {
+    if (transitioning) return;
+    const correct = _chk('q16', opt);
+    if (correct) { showScreen('screen-question17'); }
+    else { lastQuestion = 'screen-question16'; showScreen('screen-wrong16'); }
+  }
+
+  function initQ17() {
+    playChefAudio17();
+    const layers = document.querySelectorAll('.q17-layer');
+    layers.forEach(l => { l.style.transition = 'none'; l.style.opacity = '0'; });
+    if (document.body.classList.contains('debug')) { layers.forEach(l => l.style.opacity = '1'); return; }
+    setTimeout(() => { layers.forEach(l => { l.style.transition = 'opacity 0.6s ease'; l.style.opacity = '1'; }); }, 500);
+  }
+
+  function playChefAudio17() { playAudio('audio/chef_q17.mp3'); }
+
+  function answer17(opt) {
+    if (transitioning) return;
+    const correct = _chk('q17', opt);
+    if (correct) {
+      showScreen('screen-question18');
+    } else {
+      lastQuestion = 'screen-question17';
+      showScreen('screen-wrong17');
+    }
+  }
+
+  function initQ18() {
+    playChefAudio18();
+    const layers = document.querySelectorAll('.q18-layer');
+    layers.forEach(l => { l.style.transition = 'none'; l.style.opacity = '0'; });
+    if (document.body.classList.contains('debug')) { layers.forEach(l => l.style.opacity = '1'); return; }
+    setTimeout(() => { layers.forEach(l => { l.style.transition = 'opacity 0.6s ease'; l.style.opacity = '1'; }); }, 500);
+  }
+
+  function playChefAudio18() { playAudio('audio/chef_q18.mp3'); }
+
+  function answer18(opt) {
+    if (transitioning) return;
+    const correct = _chk('q18', opt);
+    if (correct) {
+      showScreen('screen-question19');
+    } else {
+      lastQuestion = 'screen-question18';
+      showScreen('screen-wrong18');
+    }
+  }
+
+  function initQ19() {
+    playChefAudio19();
+    const layer = document.querySelector('.q19-layer');
+    layer.style.transition = 'none'; layer.style.opacity = '0';
+    if (document.body.classList.contains('debug')) { layer.style.opacity = '1'; return; }
+    setTimeout(() => { layer.style.transition = 'opacity 0.6s ease'; layer.style.opacity = '1'; }, 500);
+  }
+  function playChefAudio19() { playAudio('audio/chef_q19.mp3'); }
+  function answer19(opt) {
+    if (transitioning) return;
+    const correct = _chk('q19', opt);
+    if (correct) { showScreen('screen-question20'); }
+    else { lastQuestion = 'screen-question19'; showScreen('screen-wrong19'); }
+  }
+
+  function initQ20() {
+    playChefAudio20();
+    const layer = document.querySelector('.q20-layer');
+    layer.style.transition = 'none'; layer.style.opacity = '0';
+    if (document.body.classList.contains('debug')) { layer.style.opacity = '1'; return; }
+    setTimeout(() => { layer.style.transition = 'opacity 0.6s ease'; layer.style.opacity = '1'; }, 500);
+  }
+  function playChefAudio20() { playAudio('audio/chef_q20.mp3'); }
+  function answer20(opt) {
+    if (transitioning) return;
+    const correct = _chk('q20', opt);
+    if (correct) { showScreen('screen-question21'); }
+    else { lastQuestion = 'screen-question20'; showScreen('screen-wrong20'); }
+  }
+
+  function initQ21() {
+    playChefAudio21();
+    const layer = document.querySelector('.q21-layer');
+    layer.style.transition = 'none';
+    layer.style.opacity = '0';
+    if (document.body.classList.contains('debug')) {
+      layer.style.opacity = '1'; return;
+    }
+    setTimeout(() => {
+      layer.style.transition = 'opacity 0.6s ease';
+      layer.style.opacity = '1';
+    }, 500);
+  }
+
+  function playChefAudio21() { playAudio('audio/chef_q21.mp3'); }
+
+  function answer21(opt) {
+    if (transitioning) return;
+    const correct = _chk('q21', opt);
+    if (correct) {
+      showScreen('screen-question22');
+    } else {
+      lastQuestion = 'screen-question21';
+      showScreen('screen-wrong21');
+    }
+  }
+
+  function initQ22() {
+    playChefAudio22();
+    const layer = document.querySelector('.q22-layer');
+    layer.style.transition = 'none';
+    layer.style.opacity = '0';
+    if (document.body.classList.contains('debug')) {
+      layer.style.opacity = '1'; return;
+    }
+    setTimeout(() => {
+      layer.style.transition = 'opacity 0.6s ease';
+      layer.style.opacity = '1';
+    }, 500);
+  }
+
+  function playChefAudio22() { playAudio('audio/chef_q22.mp3'); }
+
+  function answer22(opt) {
+    if (transitioning) return;
+    const correct = _chk('q22', opt);
+    if (correct) {
+      showScreen('screen-question23');
+    } else {
+      lastQuestion = 'screen-question22';
+      showScreen('screen-wrong22');
+    }
+  }
+
+  function initQ23() {
+    playChefAudio23();
+    const layers = document.querySelectorAll('.q23-layer');
+    layers.forEach(l => { l.style.transition = 'none'; l.style.opacity = '0'; });
+    if (document.body.classList.contains('debug')) { layers.forEach(l => l.style.opacity = '1'); return; }
+    setTimeout(() => { layers.forEach(l => { l.style.transition = 'opacity 0.6s ease'; l.style.opacity = '1'; }); }, 500);
+  }
+  function playChefAudio23() { playAudio('audio/chef_q23.mp3'); }
+  function answer23(opt) {
+    if (transitioning) return;
+    const correct = _chk('q23', opt);
+    if (correct) { showScreen('screen-question24'); }
+    else { lastQuestion = 'screen-question23'; showScreen('screen-wrong23'); }
+  }
+
+  function initQ24() {
+    playChefAudio24();
+    const layer = document.querySelector('.q24-layer');
+    layer.style.transition = 'none'; layer.style.opacity = '0';
+    if (document.body.classList.contains('debug')) { layer.style.opacity = '1'; return; }
+    setTimeout(() => { layer.style.transition = 'opacity 0.6s ease'; layer.style.opacity = '1'; }, 500);
+  }
+  function playChefAudio24() { playAudio('audio/chef_q24.mp3'); }
+  function answer24(opt) {
+    if (transitioning) return;
+    const correct = _chk('q24', opt);
+    if (correct) { showScreen('screen-question25'); }
+    else { lastQuestion = 'screen-question24'; showScreen('screen-wrong24'); }
+  }
+
+  function initQ25() {
+    playChefAudio25();
+    const layer = document.querySelector('.q25-layer');
+    layer.style.transition = 'none'; layer.style.opacity = '0';
+    if (document.body.classList.contains('debug')) { layer.style.opacity = '1'; return; }
+    setTimeout(() => { layer.style.transition = 'opacity 0.6s ease'; layer.style.opacity = '1'; }, 500);
+  }
+  function playChefAudio25() { playAudio('audio/chef_q25.mp3'); }
+  function answer25(opt) {
+    if (transitioning) return;
+    const correct = _chk('q25', opt);
+    if (correct) { showScreen('screen-question26'); }
+    else { lastQuestion = 'screen-question25'; showScreen('screen-wrong25'); }
+  }
+
+  function initQ26() {
+    playChefAudio26();
+    const layer = document.querySelector('.q26-layer');
+    layer.style.transition = 'none'; layer.style.opacity = '0';
+    if (document.body.classList.contains('debug')) { layer.style.opacity = '1'; return; }
+    setTimeout(() => { layer.style.transition = 'opacity 0.6s ease'; layer.style.opacity = '1'; }, 500);
+  }
+
+  function playChefAudio26() { playAudio('audio/chef_q26.mp3'); }
+
+  function answer26(opt) {
+    if (transitioning) return;
+    const correct = _chk('q26', opt);
+    if (correct) { showScreen('screen-question27'); }
+    else { lastQuestion = 'screen-question26'; showScreen('screen-wrong26'); }
+  }
+
+  function initQ27() {
+    playChefAudio27();
+    const layer = document.querySelector('.q27-layer');
+    layer.style.transition = 'none'; layer.style.opacity = '0';
+    if (document.body.classList.contains('debug')) { layer.style.opacity = '1'; return; }
+    setTimeout(() => { layer.style.transition = 'opacity 0.6s ease'; layer.style.opacity = '1'; }, 500);
+  }
+
+  function playChefAudio27() { playAudio('audio/chef_q27.mp3'); }
+
+  function answer27(opt) {
+    if (transitioning) return;
+    const correct = _chk('q27', opt);
+    if (correct) { showScreen('screen-question28'); }
+    else { lastQuestion = 'screen-question27'; showScreen('screen-wrong27'); }
+  }
+
+  function initQ28() {
+    playChefAudio28();
+    const layer = document.querySelector('.q28-layer');
+    layer.style.transition = 'none'; layer.style.opacity = '0';
+    if (document.body.classList.contains('debug')) { layer.style.opacity = '1'; return; }
+    setTimeout(() => { layer.style.transition = 'opacity 0.6s ease'; layer.style.opacity = '1'; }, 500);
+  }
+
+  function playChefAudio28() { playAudio('audio/chef_q28.mp3'); }
+
+  function answer28(opt) {
+    if (transitioning) return;
+    const correct = _chk('q28', opt);
+    if (correct) { showScreen('screen-final'); }
+    else { lastQuestion = 'screen-question28'; showScreen('screen-wrong28'); }
   }
 
   function showQuestion() {
@@ -743,7 +1464,19 @@
 
   let lastQuestion = 'screen-question';
 
-  function answer(correct) {
+  let _curAudio = null;
+  function playAudio(src) {
+    if (_curAudio) { _curAudio.pause(); _curAudio.currentTime = 0; }
+    _curAudio = new Audio(src);
+    _curAudio.play().catch(() => {});
+  }
+
+  const _ans = JSON.parse(atob('eyJxMSI6NCwicTIiOjEsInEzIjo0LCJxNCI6MywicTUiOjIsInE2IjoyLCJxNyI6MywicTgiOjEsInE5IjoxLCJxMTAiOjMsInExMSI6NCwicTEyIjoxLCJxMTMiOjQsInExNCI6MiwicTE1IjoxLCJxMTYiOjIsInExNyI6MywicTE4IjoxLCJxMTkiOjEsInEyMCI6MSwicTIxIjoxLCJxMjIiOjIsInEyMyI6MSwicTI0IjozLCJxMjUiOjEsInEyNiI6MywicTI3IjoxLCJxMjgiOjJ9'));
+  function _chk(q,opt){return _ans[q]===opt;}
+
+  function answer(opt) {
+    if (transitioning) return;
+    const correct = _chk('q1', opt);
     if (correct) {
       showScreen('screen-question2');
     } else {
@@ -752,7 +1485,9 @@
     }
   }
 
-  function answer2(correct) {
+  function answer2(opt) {
+    if (transitioning) return;
+    const correct = _chk('q2', opt);
     if (correct) {
       showScreen('screen-question3');
     } else {
@@ -761,7 +1496,9 @@
     }
   }
 
-  function answer3(correct) {
+  function answer3(opt) {
+    if (transitioning) return;
+    const correct = _chk('q3', opt);
     if (correct) {
       showScreen('screen-question4');
     } else {
@@ -770,7 +1507,9 @@
     }
   }
 
-  function answer4(correct) {
+  function answer4(opt) {
+    if (transitioning) return;
+    const correct = _chk('q4', opt);
     if (correct) {
       showScreen('screen-question5');
     } else {
@@ -779,7 +1518,9 @@
     }
   }
 
-  function answer5(correct) {
+  function answer5(opt) {
+    if (transitioning) return;
+    const correct = _chk('q5', opt);
     if (correct) {
       showScreen('screen-question6');
     } else {
@@ -788,7 +1529,9 @@
     }
   }
 
-  function answer6(correct) {
+  function answer6(opt) {
+    if (transitioning) return;
+    const correct = _chk('q6', opt);
     if (correct) {
       showScreen('screen-question7');
     } else {
@@ -797,7 +1540,9 @@
     }
   }
 
-  function answer7(correct) {
+  function answer7(opt) {
+    if (transitioning) return;
+    const correct = _chk('q7', opt);
     if (correct) {
       showScreen('screen-question8');
     } else {
@@ -806,7 +1551,9 @@
     }
   }
 
-  function answer8(correct) {
+  function answer8(opt) {
+    if (transitioning) return;
+    const correct = _chk('q8', opt);
     if (correct) {
       showScreen('screen-question9');
     } else {
@@ -815,7 +1562,9 @@
     }
   }
 
-  function answer9(correct) {
+  function answer9(opt) {
+    if (transitioning) return;
+    const correct = _chk('q9', opt);
     if (correct) {
       showScreen('screen-question10');
     } else {
@@ -824,7 +1573,9 @@
     }
   }
 
-  function answer10(correct) {
+  function answer10(opt) {
+    if (transitioning) return;
+    const correct = _chk('q10', opt);
     if (correct) {
       showScreen('screen-question11');
     } else {
@@ -833,7 +1584,9 @@
     }
   }
 
-  function answer11(correct) {
+  function answer11(opt) {
+    if (transitioning) return;
+    const correct = _chk('q11', opt);
     if (correct) {
       showScreen('screen-question12');
     } else {
@@ -842,7 +1595,9 @@
     }
   }
 
-  function answer12(correct) {
+  function answer12(opt) {
+    if (transitioning) return;
+    const correct = _chk('q12', opt);
     if (correct) {
       showScreen('screen-transition1');
     } else {
